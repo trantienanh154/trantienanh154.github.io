@@ -1,115 +1,106 @@
 <template>
   <div class="heard">
-       <div class="list-drive" >
-          <div class="item-drive">
-            <div class="d-name">
-               1. Bộ vi xử lý
-            </div>
-            <div class="lrf">
-              <a-button
-                  type="primary" @click="modal2Visible = true"
-              >
-                <plus-outlined />
-                Chọn</a-button>
-              <a-modal v-model:visible="modal2Visible"  title="Chọn Sản Phẩm" style=" width: 1100px" @ok="modal2Visible = false"  >
-
-                <div class="b-xl">
-                  <XuLy/>
-                </div>
-                <div class="l-ss">
-                  <div class="h-ss">
-                    <ExCom/>
-                  </div>
-                  <div class="h-rr">
-                    <SanPham/>
-                  </div>
-                </div>
-              </a-modal>
-            </div>
-          </div>
-          <div class="item-drive">
-            <div class="d-name">
-             2. Bo mạch chủ
-            </div>
-            <div class="lrf">
-              <a-button type="primary" @click="modal4Visible = true">
-                <plus-outlined />
-                Chọn
-              </a-button>
-              <a-modal
-                  v-model:visible="modal4Visible"
-                  title="Vertically centered modal dialog"
-                  centered
-                  @ok="modal4Visible = false"
-              >
-                <div class="b-xl">
-                  <XuLy/>
-                </div>
-                <div class="l-ss">
-                  <div class="h-ss">
-                    <ExCom/>
-                  </div>
-                  <div class="h-rr">
-                    <SanPham/>
-                  </div>
-                </div>
-              </a-modal>
-            </div>
-          </div>
-          <div class="item-drive">
-            <div class="d-name">
-              3. RAM
-            </div>
-            <div class="lrf">
-              <a-button type="primary" @click="modal3Visible = true">
-                Vertically centered modal dialog
-              </a-button>
-              <a-modal
-                  v-model:visible="modal3Visible"
-                  title="Vertically centered modal dialog"
-                  centered
-                  @ok="modal3Visible = false"
-              >
-                <p>some contents...</p>
-                <p>some contents...</p>
-                <p>some contents...</p>
-              </a-modal>
-            </div>
-          </div>
+    <div class="list-drive">
+      <div class="item-drive">
+        <div class="d-name">
+          1. Bộ vi xử lý
+        </div>
+        <div class="lrf">
+          <a-button
+              type="primary" @click="modal2Visible = true"
+          >
+            <plus-outlined/>
+            Chọn
+          </a-button>
+          <component-selector-modal
+            @on-finish="onFinish"
+            v-if="modal1Visible"
+            @visible="true"
+            @close-modal="modal1Visible = false"
+          />
+        </div>
       </div>
+      <div class="item-drive">
+        <div class="d-name">
+          2. Bo mạch chủ
+        </div>
+        <div class="lrf">
+          <a-button type="primary" @click="modal4Visible = true">
+            <plus-outlined/>
+            Chọn
+          </a-button>
+          <a-modal
+              v-model:visible="modal4Visible"
+              title="Vertically centered modal dialog"
+              centered
+              @ok="modal4Visible = false"
+          >
+            <div class="b-xl">
+              <XuLy/>
+            </div>
+            <div class="l-ss">
+              <div class="h-ss">
+                <ExCom/>
+              </div>
+              <div class="h-rr">
+                <SanPham/>
+              </div>
+            </div>
+          </a-modal>
+        </div>
+      </div>
+      <div class="item-drive">
+        <div class="d-name">
+          3. RAM
+        </div>
+        <div class="lrf">
+          <a-button type="primary" @click="modal3Visible = true">
+            Vertically centered modal dialog
+          </a-button>
+          <a-modal
+              v-model:visible="modal3Visible"
+              title="Vertically centered modal dialog"
+              centered
+              @ok="modal3Visible = false"
+          >
+            <p>some contents...</p>
+            <p>some contents...</p>
+            <p>some contents...</p>
+          </a-modal>
+        </div>
+      </div>
+    </div>
   </div>
 
 </template>
 
 <script>
-//import HelloWorldVue from "./components/HelloWorld.vue";
+import ComponentSelectorModal from "./components/ComponentSelectorModal.vue";
 
-import { ref } from 'vue';
+import {ref} from 'vue';
 import {
   PlusOutlined,
 } from '@ant-design/icons-vue';
 import XuLyVue from "./components/XuLy.vue";
 import ExCom from "@/components/ExCom";
 import SanPham from "@/components/SanPham";
+
 export default {
   name: "App",
   setup() {
-    const modal1Visible  = ref(false);
+    const modal1Visible = false;
     const modal2Visible = ref(false);
     const modal3Visible = ref(false);
     const modal4Visible = ref(false);
 
-
-    const setModal1Visible  = () => {
-      let visible;
-      modal1Visible.value = visible;
-    };
     return {
       modal1Visible,
       modal2Visible,
       modal3Visible,
       modal4Visible,
-      setModal1Visible,
+      onFinish: (values) => {
+         console.log('Received value back: ', values);
+      }
     };
   },
   components: {
@@ -118,26 +109,28 @@ export default {
     //HelloWorld: HelloWorldVue,
     // eslint-disable-next-line vue/no-unused-components
     XuLy: XuLyVue,
-
+    ComponentSelectorModal,
     PlusOutlined
   },
 };
 </script>
 
-<style >
+<style>
 
-.heard{
+.heard {
   width: 100%;
   height: 500px;
   text-align: left;
 }
-.cone{
+
+.cone {
 
   background: #fff;
   padding: 30px !important;
 
 }
-.list-drive{
+
+.list-drive {
   width: 100%;
   float: left;
   margin-bottom: 8px;
@@ -153,7 +146,8 @@ export default {
   opacity: 1;
 
 }
-.item-drive{
+
+.item-drive {
   width: 100%;
   float: left;
   content: '';
@@ -175,31 +169,37 @@ export default {
 
 
 }
-.d-name{
+
+.d-name {
   width: 20%;
   float: left;
 
 }
-.lrf{
+
+.lrf {
   width: 80%;
   float: left;
   text-align: left;
 }
-.b-xl{
+
+.b-xl {
   width: 100%;
   height: 50px;
 }
-.l-ss{
+
+.l-ss {
   width: 100%;
 }
-.h-ss{
+
+.h-ss {
   width: 30%;
   float: left;
 
 }
-.h-rr{
+
+.h-rr {
   width: 70%;
-  height: 400px ;
+  height: 400px;
   float: right;
 }
 </style>
